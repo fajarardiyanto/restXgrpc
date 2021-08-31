@@ -29,8 +29,8 @@ func LoadSeed(db *gorm.DB) {
 			level.Error(logger).Log("cannot migrate table: ", err.Error())
 		}
 
-		//if err := db.Debug().Model(&pb.ToDo{}).AddForeignKey("author_id", "users(id)", "cascade", "cascade").Error; err != nil {
-		//	level.Error(logger).Log("attaching foreign key error: %v", err.Error())
-		//}
+		if err := db.Debug().Model(&pb.ToDo{}).AddForeignKey("author_id", "users(id)", "cascade", "cascade").Error; err != nil {
+			level.Error(logger).Log("attaching foreign key error: %v", err.Error())
+		}
 	}
 }

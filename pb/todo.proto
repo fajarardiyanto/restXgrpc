@@ -7,7 +7,8 @@ message ToDo {
   string id = 1;
   string title = 2;
   string description = 3;
-  int64 created_at = 4;
+  string author_id = 4;
+  int64 created_at = 5;
 }
 
 message CreateRequest {
@@ -20,6 +21,7 @@ message CreateResponse {
 
 message ReadRequest {
   string id = 1;
+  string author_id = 2;
 }
 
 message ReadResponse {
@@ -36,13 +38,16 @@ message UpdateResponse {
 
 message DeleteRequest {
   string id = 1;
+  string author_id = 2;
 }
 
 message DeleteResponse {
   string id = 1;
 }
 
-message ReadAllRequest {}
+message ReadAllRequest {
+  string author_id = 1;
+}
 
 message ReadAllResponse {
   repeated ToDo Todo = 1;

@@ -4,13 +4,14 @@
 ###
 ##### <I>CREATE .env</I>
 ```dotenv
-    DbHost=
-    DbPort=
-    DbUser=
-    DbName=
-    DbPassword=
-    BIND_ADDR_CLIENT=
-    BIND_ADDR_SERVER=
+API_SECRET=
+DbHost=
+DbPort=
+DbUser=
+DbName=
+DbPassword=
+BIND_ADDR_CLIENT=
+BIND_ADDR_SERVER=
 ```
 ###
 ##### <I>INSTALL PACKAGE</I>

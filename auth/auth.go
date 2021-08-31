@@ -7,7 +7,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"strconv"
 	"strings"
 	"time"
 )
@@ -52,7 +51,7 @@ func ExtractToken(r *http.Request) string {
 	return ""
 }
 
-func ExtractTokenId(r *http.Request) (uint32, error) {
+func ExtractTokenID(r *http.Request) (string, error) {
 	tokenString := ExtractToken(r)
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
@@ -61,17 +60,13 @@ func ExtractTokenId(r *http.Request) (uint32, error) {
 		return []byte(os.Getenv("API_SECRET")), nil
 	})
 	if err != nil {
-		return 0, err
+		return "", err
 	}
 	claims, ok := token.Claims.(jwt.MapClaims)
 	if ok && token.Valid {
-		uid, err := strconv.ParseUint(fmt.Sprintf("%.0f", claims["user_id"]), 10, 32)
-		if err != nil {
-			return 0, err
-		}
-		return uint32(uid), nil
+		return claims["user_id"].(string), nil
 	}
-	return 0, nil
+	return "", nil
 }
 
 func Pretty(data interface{}) {

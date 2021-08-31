@@ -30,7 +30,7 @@ func (r *repoTodo) Create(_ context.Context, req *pb.CreateRequest) (*pb.CreateR
 func (r *repoTodo) Read(_ context.Context, req *pb.ReadRequest) (*pb.ReadResponse, error) {
 	var err error
 	var todo pb.ToDo
-	if err = r.db.Debug().Model(&todo).Where("id = ?", req.Id).Take(&todo).Error; err != nil {
+	if err = r.db.Debug().Model(&todo).Where("id = ? AND author_id = ?", req.Id, req.AuthorId).Take(&todo).Error; err != nil {
 		return nil, err
 	}
 
@@ -42,7 +42,7 @@ func (r *repoTodo) Read(_ context.Context, req *pb.ReadRequest) (*pb.ReadRespons
 func (r *repoTodo) Update(_ context.Context, req *pb.UpdateRequest) (*pb.UpdateResponse, error) {
 	var err error
 	var todo pb.ToDo
-	if err = r.db.Debug().Model(&todo).Where("id = ?", req.Todo.Id).Take(&todo).UpdateColumns(&req.Todo).Error; err != nil {
+	if err = r.db.Debug().Model(&todo).Where("id = ? AND author_id = ?", req.Todo.Id, req.Todo.AuthorId).Take(&todo).UpdateColumns(&req.Todo).Error; err != nil {
 		return nil, err
 	}
 
@@ -54,17 +54,17 @@ func (r *repoTodo) Update(_ context.Context, req *pb.UpdateRequest) (*pb.UpdateR
 func (r *repoTodo) Delete(_ context.Context, req *pb.DeleteRequest) (*pb.DeleteResponse, error) {
 	var err error
 	var todo pb.ToDo
-	if err = r.db.Debug().Model(&todo).Where("id = ?", req.Id).Delete(&todo).Error; err != nil {
+	if err = r.db.Debug().Model(&todo).Where("id = ? AND author_id = ?", req.Id, req.AuthorId).Delete(&todo).Error; err != nil {
 		return nil, err
 	}
 
 	return &pb.DeleteResponse{Id: req.Id}, nil
 }
 
-func (r *repoTodo) ReadAll(_ context.Context, _ *pb.ReadAllRequest) (*pb.ReadAllResponse, error) {
+func (r *repoTodo) ReadAll(_ context.Context, req *pb.ReadAllRequest) (*pb.ReadAllResponse, error) {
 	var err error
 	var todo []*pb.ToDo
-	if err = r.db.Debug().Model(&pb.ToDo{}).Find(&todo).Error; err != nil {
+	if err = r.db.Debug().Model(&pb.ToDo{}).Where("author_id = ?", req.AuthorId).Find(&todo).Error; err != nil {
 		return nil, err
 	}
 
