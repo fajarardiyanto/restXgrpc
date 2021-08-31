@@ -1,0 +1,57 @@
+syntax = "proto3";
+package v1;
+
+option go_package = "/pb";
+
+message ToDo {
+  string id = 1;
+  string title = 2;
+  string description = 3;
+  int64 created_at = 4;
+}
+
+message CreateRequest {
+  ToDo Todo = 1;
+}
+
+message CreateResponse {
+  ToDo Todo = 1;
+}
+
+message ReadRequest {
+  string id = 1;
+}
+
+message ReadResponse {
+  ToDo Todo = 1;
+}
+
+message UpdateRequest {
+  ToDo Todo = 1;
+}
+
+message UpdateResponse {
+  ToDo Todo = 1;
+}
+
+message DeleteRequest {
+  string id = 1;
+}
+
+message DeleteResponse {
+  string id = 1;
+}
+
+message ReadAllRequest {}
+
+message ReadAllResponse {
+  repeated ToDo Todo = 1;
+}
+
+service ToDoService {
+  rpc Create(CreateRequest) returns (CreateResponse);
+  rpc Read(ReadRequest) returns (ReadResponse);
+  rpc Update(UpdateRequest) returns (UpdateResponse);
+  rpc Delete(DeleteRequest) returns (DeleteResponse);
+  rpc ReadAll(ReadAllRequest) returns (ReadAllResponse);
+}
