@@ -1,0 +1,21 @@
+syntax = "proto3";
+package v1;
+
+option go_package = "/pb";
+
+message Auth {
+  string username = 1;
+  string password = 2;
+}
+
+message AuthRequest {
+  Auth Auth = 1;
+}
+
+message AuthResponse {
+  string access_token = 1;
+}
+
+service AuthService {
+  rpc Auth(AuthRequest) returns (AuthResponse);
+}

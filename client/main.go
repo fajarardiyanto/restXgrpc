@@ -39,9 +39,11 @@ func main() {
 
 	connUser := pb.NewUserServiceClient(conn)
 	connTodo := pb.NewToDoServiceClient(conn)
+	connAuth := pb.NewAuthServiceClient(conn)
 
 	handlerUser := handler.NewUserServiceClient(connUser)
 	handlerTodo := handler.NewTodoServiceClient(connTodo)
+	handlerAuth := handler.NewAuthServiceClient(connAuth)
 
 	r := mux.NewRouter()
 
@@ -57,7 +59,11 @@ func main() {
 	getR.HandleFunc("/get/todo", handlerTodo.GetTodo)
 	getR.HandleFunc("/delete/todo", handlerTodo.DeleteTodo)
 
+	// Method POST
 	postR := r.Methods(http.MethodPost).Subrouter()
+	// Auth
+	postR.HandleFunc("/login", handlerAuth.Login)
+
 	// User
 	postR.HandleFunc("/create/user", handlerUser.CreateUser)
 	postR.HandleFunc("/update/user", handlerUser.UpdateUser)

@@ -3,6 +3,7 @@ module todo-grpc
 go 1.16
 
 require (
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/go-kit/kit v0.11.0
 	github.com/google/uuid v1.1.2
 	github.com/gorilla/handlers v1.5.1
