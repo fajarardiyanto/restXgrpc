@@ -9,7 +9,7 @@ import (
 	"github.com/joho/godotenv"
 	l "log"
 	"os"
-	"todo-grpc/protocol/server"
+	"todo-grpc/cmd/server"
 	"todo-grpc/seed"
 	"todo-grpc/service"
 
