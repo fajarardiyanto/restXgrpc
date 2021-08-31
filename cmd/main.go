@@ -56,9 +56,10 @@ func RunServer() error {
 	}
 
 	seed.LoadSeed(db)
-	api := service.NewRepoServer(db)
+	apiTodo := service.NewRepoTodoServer(db)
+	apiUser := service.NewRepoUserService(db)
 
-	return server.RunServerGRPC(ctx, api, BIND_ADDR)
+	return server.RunServerGRPC(ctx, apiTodo, apiUser, BIND_ADDR)
 }
 
 func main() {

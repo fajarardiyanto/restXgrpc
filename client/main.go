@@ -37,21 +37,34 @@ func main() {
 	}
 	defer conn.Close()
 
-	c := pb.NewToDoServiceClient(conn)
+	connUser := pb.NewUserServiceClient(conn)
+	connTodo := pb.NewToDoServiceClient(conn)
 
-	handler := handler.NewTodoServiceClient(c)
+	handlerUser := handler.NewUserServiceClient(connUser)
+	handlerTodo := handler.NewTodoServiceClient(connTodo)
 
 	r := mux.NewRouter()
 
 	// Method GET
 	getR := r.Methods(http.MethodGet).Subrouter()
-	getR.HandleFunc("/get/todos", handler.GetAllTodos)
-	getR.HandleFunc("/get/todo", handler.GetTodo)
-	getR.HandleFunc("/delete/todo", handler.DeleteTodo)
+	// User
+	getR.HandleFunc("/get/users", handlerUser.GetAllUser)
+	getR.HandleFunc("/get/user", handlerUser.GetUser)
+	getR.HandleFunc("/delete/user", handlerUser.DeleteUser)
+
+	// Todo
+	getR.HandleFunc("/get/todos", handlerTodo.GetAllTodos)
+	getR.HandleFunc("/get/todo", handlerTodo.GetTodo)
+	getR.HandleFunc("/delete/todo", handlerTodo.DeleteTodo)
 
 	postR := r.Methods(http.MethodPost).Subrouter()
-	postR.HandleFunc("/create/todo", handler.CreateTodo)
-	postR.HandleFunc("/update/todo", handler.UpdateTodo)
+	// User
+	postR.HandleFunc("/create/user", handlerUser.CreateUser)
+	postR.HandleFunc("/update/user", handlerUser.UpdateUser)
+
+	// Todo
+	postR.HandleFunc("/create/todo", handlerTodo.CreateTodo)
+	postR.HandleFunc("/update/todo", handlerTodo.UpdateTodo)
 
 	srv := &http.Server{
 		Handler:      handlers.CORS()(r),

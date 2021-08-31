@@ -1,0 +1,59 @@
+syntax = "proto3";
+package v1;
+
+option go_package = "/pb";
+
+message User {
+  string id = 1;
+  string fullname = 2;
+  string username = 3;
+  string email = 4;
+  string password = 5;
+  int64 created_at = 6;
+}
+
+message UserCreateRequest {
+  User User = 1;
+}
+
+message UserCreateResponse {
+  User User = 1;
+}
+
+message UserReadRequest {
+  string id = 1;
+}
+
+message UserReadResponse {
+  User User = 1;
+}
+
+message UserUpdateRequest {
+  User User = 1;
+}
+
+message UserUpdateResponse {
+  User User = 1;
+}
+
+message UserDeleteRequest {
+  string id = 1;
+}
+
+message UserDeleteResponse {
+  string id = 1;
+}
+
+message UserReadAllRequest {}
+
+message UserReadAllResponse {
+  repeated User User = 1;
+}
+
+service UserService {
+  rpc Create(UserCreateRequest) returns (UserCreateResponse);
+  rpc Read(UserReadRequest) returns (UserReadResponse);
+  rpc Update(UserUpdateRequest) returns (UserUpdateResponse);
+  rpc Delete(UserDeleteRequest) returns (UserDeleteResponse);
+  rpc ReadAll(UserReadAllRequest) returns (UserReadAllResponse);
+}
