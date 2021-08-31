@@ -47,30 +47,22 @@ func main() {
 
 	r := mux.NewRouter()
 
-	// Method GET
-	getR := r.Methods(http.MethodGet).Subrouter()
-	// User
-	getR.HandleFunc("/get/users", handlerUser.GetAllUser)
-	getR.HandleFunc("/get/user", handlerUser.GetUser)
-	getR.HandleFunc("/delete/user", handlerUser.DeleteUser)
-
-	// Todo
-	getR.HandleFunc("/get/todos", handlerTodo.GetAllTodos)
-	getR.HandleFunc("/get/todo", handlerTodo.GetTodo)
-	getR.HandleFunc("/delete/todo", handlerTodo.DeleteTodo)
-
-	// Method POST
-	postR := r.Methods(http.MethodPost).Subrouter()
 	// Auth
-	postR.HandleFunc("/login", handlerAuth.Login)
+	r.HandleFunc("/login", handlerAuth.Login).Methods("POST")
 
 	// User
-	postR.HandleFunc("/create/user", handlerUser.CreateUser)
-	postR.HandleFunc("/update/user", handlerUser.UpdateUser)
+	r.HandleFunc("/get/user", handlerUser.GetUser).Methods("GET")
+	r.HandleFunc("/get/users", handlerUser.GetAllUser).Methods("GET")
+	r.HandleFunc("/delete/user", handlerUser.DeleteUser).Methods("GET")
+	r.HandleFunc("/create/user", handlerUser.CreateUser).Methods("POST")
+	r.HandleFunc("/update/user", handlerUser.UpdateUser).Methods("POST")
 
 	// Todo
-	postR.HandleFunc("/create/todo", handlerTodo.CreateTodo)
-	postR.HandleFunc("/update/todo", handlerTodo.UpdateTodo)
+	r.HandleFunc("/get/todo", handlerTodo.GetTodo).Methods("GET")
+	r.HandleFunc("/get/todos", handlerTodo.GetAllTodos).Methods("GET")
+	r.HandleFunc("/delete/todo", handlerTodo.DeleteTodo).Methods("GET")
+	r.HandleFunc("/create/todo", handlerTodo.CreateTodo).Methods("POST")
+	r.HandleFunc("/update/todo", handlerTodo.UpdateTodo).Methods("POST")
 
 	srv := &http.Server{
 		Handler:      handlers.CORS()(r),
